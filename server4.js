@@ -4,12 +4,12 @@ const io = require('socket.io')(http);
 const moment = require('moment-timezone');
 
 app.get('/', async (req, res) => {
-    console.log(`S4 TG2 - Received a get request at ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}. Path: /`);
+    console.log(`S4 TG2 - Received a get request at ${moment().tz('Asia/Kolkata').toDate()}. Path: /`);
     res.send('Hello World!');
 });
 
 app.get('/hello', async (req, res) => {
-    console.log(`S4 TG2 - Received a get request at ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}. Path: /hello`);
+    console.log(`S4 TG2 - Received a get request at ${moment().tz('Asia/Kolkata').toDate()}. Path: /hello`);
     res.send('Hello World!');
 });
 
@@ -47,7 +47,7 @@ const users = [{
 
 // event fired every time a new client connects:
 io.on("connection", (socket) => {
-    console.log(`S4 TG2 - Client connected [id=${socket.id}] at ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+    console.log(`S4 TG2 - Client connected [id=${socket.id}] at ${moment().tz('Asia/Kolkata').toDate()}`);
     
     // initialize this client's sequence number
     if  (!clients.get(socket)) {
@@ -58,17 +58,17 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         // sequenceNumberByClient.delete(socket);
         clients.delete(socket);
-        console.log(`S4 TG2 - Client [id=${socket.id}] disconnected at ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+        console.log(`S4 TG2 - Client [id=${socket.id}] disconnected at ${moment().tz('Asia/Kolkata').toDate()}`);
     });
 
-    console.log(`S4 TG2 - Outside getUserDetails Event - ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+    console.log(`S4 TG2 - Outside getUserDetails Event - ${moment().tz('Asia/Kolkata').toDate()}`);
     /* When someone asks for their details send them */ 
     socket.on("getUserDetails", (params = {}) => {
-        console.log(`S4 TG2 - Outside getUserDetails Event - ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+        console.log(`S4 TG2 - Outside getUserDetails Event - ${moment().tz('Asia/Kolkata').toDate()}`);
         const id = Number(params.id);
         const reqNo = Number(params.reqNo);
         const requiredUser = users.find(user => user.id === id);
-        console.log(`S4 TG2 - Inside getUserDetails Event - ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+        console.log(`S4 TG2 - Inside getUserDetails Event - ${moment().tz('Asia/Kolkata').toDate()}`);
         let message;
         if (!requiredUser) {
             message = `Sorry Couldn't authenticate the user`;    
@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
         }
         
         // let [client] = clients.get(socket);  
-        console.log(`S4 TG2 - Just Before Emit Event - ${moment().tz('Asia/Kolkata').format('YYYY-MM-DD HH:MM:SS')}`);
+        console.log(`S4 TG2 - Just Before Emit Event - ${moment().tz('Asia/Kolkata').toDate()}`);
         socket.emit("seq-num", { message, reqNo: reqNo + 1});
     });
 });
